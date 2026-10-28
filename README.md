@@ -2,8 +2,9 @@
 
 A premium, fully accessible, and responsive Flashcard web application built with Vanilla HTML, CSS, and JavaScript.
 
-🔗 Live Demo: https://lnkd.in/dEbzd8gh
-💻 GitHub Repo: https://lnkd.in/d67pAdS6
+🔗 Live Demo:  https://vishal-maddheshiya.github.io/Recall-Studio-Smart-Flashcards-/
+
+💻 GitHub Repo: https://github.com/VISHAL-MADDHESHIYA/Recall-Studio-Smart-Flashcards-
 
 ## Features
 - **20+ High-Quality Flashcards**: Covering JavaScript, CSS, HTML, and General Web concepts.
