@@ -2,6 +2,9 @@
 
 A premium, fully accessible, and responsive Flashcard web application built with Vanilla HTML, CSS, and JavaScript.
 
+🔗 Live Demo: https://lnkd.in/dEbzd8gh
+💻 GitHub Repo: https://lnkd.in/d67pAdS6
+
 ## Features
 - **20+ High-Quality Flashcards**: Covering JavaScript, CSS, HTML, and General Web concepts.
 - **3D Flip Animation**: Smooth CSS `transform` and `perspective` animations.
