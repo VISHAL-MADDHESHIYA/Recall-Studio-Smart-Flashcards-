@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recall Studio — Smart Flashcards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="top-header">
+            <div class="brand">
+                <i data-lucide="layers" class="brand-icon"></i>
+                <h1>Recall Studio</h1>
+            </div>
+            <div class="header-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme">
+                    <i data-lucide="moon" class="theme-icon-light"></i>
+                    <i data-lucide="sun" class="theme-icon-dark"></i>
+                </button>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- Sidebar / Controls -->
+            <aside class="sidebar">
+                <section class="filters-section">
+                    <h2 class="section-title">Filters</h2>
+                    
+                    <div class="input-group">
+                        <i data-lucide="search" class="input-icon"></i>
+                        <input type="text" id="search-input" placeholder="Search questions..." aria-label="Search questions">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="category-filter">Category</label>
+                        <select id="category-filter">
+                            <option value="all">All Categories</option>
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="difficulty-filter">Difficulty</label>
+                        <select id="difficulty-filter">
+                            <option value="all">All Levels</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                    
+                    <button id="reset-filters" class="text-btn">Clear Filters</button>
+                </section>
+
+                <section class="stats-section">
+                    <h2 class="section-title">Session Stats</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-value" id="stat-reviewed">0</span>
+                            <span class="stat-label">Reviewed</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value" id="stat-got-it">0</span>
+                            <span class="stat-label">Got it</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-value" id="stat-review">0</span>
+                            <span class="stat-label">Needs Review</span>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+
+            <!-- Main Flashcard Area -->
+            <section class="flashcard-stage">
+                <div class="progress-section">
+                    <div class="progress-info">
+                        <span id="card-counter">Card 1 of 20</span>
+                        <span id="progress-percentage">5%</span>
+                    </div>
+                    <div class="progress-bar-container" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-bar-fill" id="progress-bar"></div>
+                    </div>
+                </div>
+
+                <div class="empty-state hidden" id="empty-state">
+                    <i data-lucide="inbox"></i>
+                    <h3>No cards found</h3>
+                    <p>Try adjusting your filters or search query.</p>
+                </div>
+
+                <div class="flashcard-container" id="flashcard-container">
+                    <div class="flashcard" id="flashcard">
+                        <!-- Front -->
+                        <div class="card-face card-front">
+                            <div class="card-meta">
+                                <span class="badge category-badge" id="card-category">Category</span>
+                                <span class="badge difficulty-badge" id="card-difficulty">Level</span>
+                            </div>
+                            <h2 class="card-question" id="card-question">Question goes here</h2>
+                            <div class="card-actions">
+                                <button class="icon-btn bookmark-btn" id="bookmark-btn" aria-label="Bookmark card">
+                                    <i data-lucide="bookmark"></i>
+                                </button>
+                                <button class="hint-btn" id="hint-btn">
+                                    <i data-lucide="lightbulb"></i> Hint
+                                </button>
+                            </div>
+                            <p class="hint-text hidden" id="hint-text"></p>
+                        </div>
+                        
+                        <!-- Back -->
+                        <div class="card-face card-back">
+                            <div class="card-meta">
+                                <span class="badge category-badge" id="card-category-back">Category</span>
+                            </div>
+                            <h2 class="card-answer" id="card-answer">Answer goes here</h2>
+                            <div class="study-mode-controls">
+                                <button class="study-btn review-btn" id="btn-review">
+                                    <i data-lucide="rotate-ccw"></i> Need to Review
+                                </button>
+                                <button class="study-btn got-it-btn" id="btn-got-it">
+                                    <i data-lucide="check"></i> Got it
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navigation-controls">
+                    <button id="btn-prev" class="nav-btn" aria-label="Previous card">
+                        <i data-lucide="chevron-left"></i> Previous
+                    </button>
+                    <button id="btn-flip" class="primary-btn" aria-label="Flip card">
+                        <i data-lucide="repeat"></i> Flip Card
+                    </button>
+                    <button id="btn-next" class="nav-btn" aria-label="Next card">
+                        Next <i data-lucide="chevron-right"></i>
+                    </button>
+                </div>
+
+                <div class="deck-controls">
+                    <button id="btn-shuffle" class="secondary-btn"><i data-lucide="shuffle"></i> Shuffle Deck</button>
+                    <button id="btn-reset-deck" class="danger-btn"><i data-lucide="refresh-cw"></i> Reset Deck</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Session Summary Modal -->
+    <div class="modal-overlay hidden" id="summary-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Session Complete!</h2>
+                <button class="icon-btn close-modal" aria-label="Close modal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>Great job reviewing the deck. Here is your summary:</p>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <span id="summary-total">0</span>
+                        <span>Total Cards</span>
+                    </div>
+                    <div class="summary-stat success">
+                        <span id="summary-got-it">0</span>
+                        <span>Confident</span>
+                    </div>
+                    <div class="summary-stat warning">
+                        <span id="summary-review">0</span>
+                        <span>To Review</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-restart-session" class="primary-btn">Study Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="modal-overlay hidden" id="reset-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Reset Progress?</h2>
+                <button class="icon-btn close-modal" aria-label="Close modal"><i data-lucide="x"></i></button>
+            </div>
+            <div class="modal-body">
+                <p>This will clear your bookmarks, session stats, and reset the deck to its original state. This cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-btn close-modal">Cancel</button>
+                <button id="btn-confirm-reset" class="danger-btn">Yes, Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
